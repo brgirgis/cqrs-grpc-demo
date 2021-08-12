@@ -1,9 +1,9 @@
-#[path = "../proto/account-api.rs"]
-mod account_api;
+#[path = "../proto/bank_account_api.rs"]
+mod bank_account_api;
 
-use account_api::{
-    account_client::EvaluationClient,
-    VanillaDealRequest,
+use bank_account_api::{
+    bank_account_client::BankAccountClient,
+    OpenBankAccountRequest,
 };
 
 #[tokio::main]
@@ -13,21 +13,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             .connect()
             .await?;
 
-    let mut client = EvaluationClient::new(channel);
+    let mut client = BankAccountClient::new(channel);
 
-    let request = tonic::Request::new(VanillaDealRequest {
-        underlying_market_name: String::from(", world!"),
-        option_type: 0,
-        strike_value: 0.0,
-        time_to_maturity: 0.0,
-        spot_price: 0.0,
-        interest_rate: 0.0,
-        volatility: 0.0,
+    let request = tonic::Request::new(OpenBankAccountRequest {
+        account_id: "new-account-1".to_string(),
     });
 
     // sending request and waiting for response
     let response = client
-        .evaluate_vanilla_deal(request)
+        .open_account(request)
         .await?
         .into_inner();
     println!("RESPONSE={:?}", response);

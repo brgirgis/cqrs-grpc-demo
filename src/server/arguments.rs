@@ -3,7 +3,7 @@ use structopt::StructOpt;
 #[derive(Debug, StructOpt)]
 #[structopt(
     name = "account-server",
-    about = "Account server"
+    about = "BankAccount server"
 )]
 pub struct Arguments {
     /// Activate debug mode

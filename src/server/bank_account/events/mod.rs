@@ -11,9 +11,8 @@ use serde::{
     Deserialize,
     PartialEq
 )]
-
 pub enum BankAccountEvent {
-    AccountOpened(AccountOpened),
+    BankAccountOpened(BankAccountOpened),
     CustomerDepositedMoney(CustomerDepositedMoney),
     CustomerWithdrewCash(CustomerWithdrewCash),
     CustomerWroteCheck(CustomerWroteCheck),
@@ -26,8 +25,7 @@ pub enum BankAccountEvent {
     Deserialize,
     PartialEq
 )]
-
-pub struct AccountOpened {
+pub struct BankAccountOpened {
     pub account_id: String,
 }
 
@@ -38,7 +36,6 @@ pub struct AccountOpened {
     Deserialize,
     PartialEq
 )]
-
 pub struct CustomerDepositedMoney {
     pub amount: f64,
     pub balance: f64,
@@ -51,7 +48,6 @@ pub struct CustomerDepositedMoney {
     Deserialize,
     PartialEq
 )]
-
 pub struct CustomerWithdrewCash {
     pub amount: f64,
     pub balance: f64,
@@ -64,7 +60,6 @@ pub struct CustomerWithdrewCash {
     Deserialize,
     PartialEq
 )]
-
 pub struct CustomerWroteCheck {
     pub check_number: String,
     pub amount: f64,

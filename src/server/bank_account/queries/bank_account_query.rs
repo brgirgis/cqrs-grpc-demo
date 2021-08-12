@@ -1,37 +1,16 @@
 use cqrs_es2::{
     EventEnvelope,
     Query,
-    QueryProcessor,
 };
 use serde::{
     Deserialize,
     Serialize,
 };
 
-use super::{
+use super::super::{
     aggregate::BankAccount,
     events::BankAccountEvent,
 };
-
-pub struct SimpleLoggingQueryProcessor {}
-
-impl QueryProcessor<BankAccount> for SimpleLoggingQueryProcessor {
-    fn dispatch(
-        &mut self,
-        aggregate_id: &str,
-        events: &[EventEnvelope<BankAccount>],
-    ) {
-        for event in events {
-            let payload =
-                serde_json::to_string_pretty(&event.payload).unwrap();
-
-            println!(
-                "{}-{}\n{}",
-                aggregate_id, event.sequence, payload
-            );
-        }
-    }
-}
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct BankAccountQuery {
@@ -46,7 +25,7 @@ impl Query<BankAccount> for BankAccountQuery {
         event: &EventEnvelope<BankAccount>,
     ) {
         match &event.payload {
-            BankAccountEvent::AccountOpened(payload) => {
+            BankAccountEvent::BankAccountOpened(payload) => {
                 self.account_id = Some(payload.account_id.clone());
             },
             BankAccountEvent::CustomerDepositedMoney(payload) => {
@@ -57,7 +36,6 @@ impl Query<BankAccount> for BankAccountQuery {
             },
             BankAccountEvent::CustomerWroteCheck(payload) => {
                 self.balance = payload.balance;
-
                 self.written_checks
                     .push(payload.check_number.clone())
             },

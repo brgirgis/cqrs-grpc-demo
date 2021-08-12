@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package account_api;
+package bank_account_api;
 
 // account commands
-message OpenAccountRequest {
+message OpenBankAccountRequest {
   string account_id = 1;
 }
 
@@ -24,7 +24,7 @@ message WriteCheckRequest {
 }
 
 // account queries
-message AccountSummaryResponse {
+message BankAccountSummaryResponse {
   string account_id = 1;
   double balance = 2;
   repeated int64 written_checks = 3;
@@ -35,18 +35,18 @@ message CommandResponse {
   bool is_successful = 1;
 }
 
-message AccountQueryRequest {
+message BankAccountQueryRequest {
   string account_id = 1;
 }
 
-service Account {
+service BankAccount {
 
   // commands
-  rpc open_account(OpenAccountRequest) returns (CommandResponse);
+  rpc open_account(OpenBankAccountRequest) returns (CommandResponse);
   rpc deposit_money(DepositMoneyRequest) returns (CommandResponse);
   rpc withdraw_money(WithdrawMoneyRequest) returns (CommandResponse);
   rpc write_check(WriteCheckRequest) returns (CommandResponse);
 
   // queries
-  rpc get_account_summary(AccountQueryRequest) returns (AccountSummaryResponse);
+  rpc get_account_summary(BankAccountQueryRequest) returns (BankAccountSummaryResponse);
 }

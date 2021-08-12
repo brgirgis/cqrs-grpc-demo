@@ -4,25 +4,25 @@ use tonic::{
     Status,
 };
 
-use crate::account_api::{
-    account_server::Account,
-    AccountQueryRequest,
-    AccountSummaryResponse,
+use crate::bank_account_api::{
+    bank_account_server::BankAccount,
+    BankAccountQueryRequest,
+    BankAccountSummaryResponse,
     CommandResponse,
     DepositMoneyRequest,
-    OpenAccountRequest,
+    OpenBankAccountRequest,
     WithdrawMoneyRequest,
     WriteCheckRequest,
 };
 
 #[derive(Default)]
-pub struct AccountService {}
+pub struct BankAccountService {}
 
 #[tonic::async_trait]
-impl Account for AccountService {
+impl BankAccount for BankAccountService {
     async fn open_account(
         &self,
-        request: Request<OpenAccountRequest>,
+        request: Request<OpenBankAccountRequest>,
     ) -> Result<Response<CommandResponse>, Status> {
         println!("{:?}", request);
 
@@ -74,16 +74,18 @@ impl Account for AccountService {
 
     async fn get_account_summary(
         &self,
-        request: Request<AccountQueryRequest>,
-    ) -> Result<Response<AccountSummaryResponse>, Status> {
+        request: Request<BankAccountQueryRequest>,
+    ) -> Result<Response<BankAccountSummaryResponse>, Status> {
         println!("{:?}", request);
 
         let req = request.get_ref();
 
-        Ok(Response::new(AccountSummaryResponse {
-            account_id: "".to_string(),
-            balance: 0.0,
-            written_checks: vec![0; 0],
-        }))
+        Ok(Response::new(
+            BankAccountSummaryResponse {
+                account_id: "".to_string(),
+                balance: 0.0,
+                written_checks: vec![0; 0],
+            },
+        ))
     }
 }

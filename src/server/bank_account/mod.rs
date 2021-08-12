@@ -1,6 +1,7 @@
+pub use service::BankAccountService;
+
 mod aggregate;
 mod commands;
 mod events;
 mod queries;
-
-pub mod service;
+mod service;

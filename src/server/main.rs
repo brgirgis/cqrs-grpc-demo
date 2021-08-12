@@ -1,7 +1,7 @@
-mod account;
-#[path = "../proto/account-api.rs"]
-mod account_api;
 mod arguments;
+mod bank_account;
+#[path = "../proto/bank_account_api.rs"]
+mod bank_account_api;
 mod cqrs;
 
 // arguments
@@ -9,10 +9,10 @@ use arguments::Arguments;
 use structopt::StructOpt;
 
 // service
-use account::service::AccountService;
+use bank_account::BankAccountService;
 
 // server
-use account_api::account_server::AccountServer;
+use bank_account_api::bank_account_server::BankAccountServer;
 use tonic::transport::Server;
 
 #[tokio::main]
@@ -23,11 +23,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .parse()
         .unwrap();
 
-    let account_service = AccountService::default();
+    let account_service = BankAccountService::default();
     println!("Server listening on {}", addr);
 
     Server::builder()
-        .add_service(AccountServer::new(account_service))
+        .add_service(BankAccountServer::new(account_service))
         .serve(addr)
         .await?;
     Ok(())
