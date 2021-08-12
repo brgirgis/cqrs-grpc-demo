@@ -1,9 +1,12 @@
-use postgres::{Connection, TlsMode};
+use postgres::{
+    Client,
+    NoTls,
+};
 
-pub fn db_connection() -> Connection {
-  Connection::connect(
-    "postgresql://demo_user:demo_pass@localhost:5432/demo",
-    TlsMode::None,
-  )
-  .unwrap()
+pub fn db_connection() -> Client {
+    Client::connect(
+        "postgresql://demo_user:demo_pass@localhost:5432/demo",
+        NoTls,
+    )
+    .unwrap()
 }

@@ -1,13 +1,20 @@
 use structopt::StructOpt;
 
 #[derive(Debug, StructOpt)]
-#[structopt(name = "account-server", about = "Account server")]
+#[structopt(
+    name = "account-server",
+    about = "Account server"
+)]
 pub struct Arguments {
-  /// Activate debug mode
-  #[structopt(short, long)]
-  pub debug: bool,
+    /// Activate debug mode
+    #[structopt(short, long)]
+    pub debug: bool,
 
-  /// Port number
-  #[structopt(short = "p", long = "port", default_value = "50051")]
-  pub port: u32,
+    /// Port number
+    #[structopt(
+        short = "p",
+        long = "port",
+        default_value = "50051"
+    )]
+    pub port: u32,
 }

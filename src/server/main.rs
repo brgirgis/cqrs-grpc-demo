@@ -19,7 +19,9 @@ use tonic::transport::Server;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Arguments::from_args();
 
-    let addr = format!("[::1]:{}", args.port).parse().unwrap();
+    let addr = format!("[::1]:{}", args.port)
+        .parse()
+        .unwrap();
 
     let account_service = AccountService::default();
     println!("Server listening on {}", addr);
