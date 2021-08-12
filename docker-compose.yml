@@ -1,0 +1,26 @@
+version: "3.4"
+
+services:
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - "./db:/docker-entrypoint-initdb.d"
+    networks:
+      - default
+    ports:
+      - "5432:5432"
+    environment:
+      - "POSTGRES_DB=demo"
+      - "POSTGRES_USER=demo_user"
+      - "POSTGRES_PASSWORD=demo_pass"
+
+  ui:
+    image: adminer
+    restart: always
+    networks:
+      - default
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
