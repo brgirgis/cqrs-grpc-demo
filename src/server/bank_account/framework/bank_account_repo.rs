@@ -3,18 +3,20 @@ use postgres_es2::{
     PostgresCqrs,
 };
 
-use super::db::db_connection;
+use crate::cqrs::db_connection;
 
-// use crate::bank_account::{
-//     BankAccount,
-//     BankAccountQuery,
-//     SimpleLoggingQueryProcessor,
-// };
+use super::super::{
+    aggregate::BankAccount,
+    queries::{
+        BankAccountQuery,
+        SimpleLoggingQueryProcessor,
+    },
+};
 
 type AccountQuery =
     GenericQueryRepository<BankAccountQuery, BankAccount>;
 
-pub fn cqrs_repo() -> PostgresCqrs<BankAccount> {
+pub fn bank_account_repo() -> PostgresCqrs<BankAccount> {
     let simple_query = SimpleLoggingQueryProcessor {};
 
     let mut account_query_processor =

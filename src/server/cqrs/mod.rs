@@ -1,2 +1,3 @@
-pub mod db;
-pub mod repo;
+pub use db::db_connection;
+
+mod db;
