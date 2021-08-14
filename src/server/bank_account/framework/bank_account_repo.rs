@@ -1,6 +1,6 @@
-use postgres_es2::{
-    GenericQueryRepository,
-    PostgresCqrs,
+use cqrs_es2_sql::{
+    get_cqrs,
+    Cqrs,
 };
 
 use crate::cqrs::db_connection;
@@ -8,24 +8,23 @@ use crate::cqrs::db_connection;
 use super::super::{
     aggregate::BankAccount,
     queries::{
-        BankAccountQuery,
+        BankAccountQueryRepository,
         SimpleLoggingQueryProcessor,
     },
 };
 
-type AccountQuery =
-    GenericQueryRepository<BankAccountQuery, BankAccount>;
-
-pub fn bank_account_repo() -> PostgresCqrs<BankAccount> {
+pub fn bank_account_repo() -> Cqrs<BankAccount> {
     let simple_query = SimpleLoggingQueryProcessor {};
 
-    let mut account_query_processor =
-        AccountQuery::new("account_query", db_connection());
+    let mut account_query_processor = BankAccountQueryRepository::new(
+        "account_query",
+        db_connection(),
+    );
 
     account_query_processor
         .with_error_handler(Box::new(|e| println!("{}", e)));
 
-    postgres_es2::postgres_cqrs(
+    get_cqrs(
         db_connection(),
         vec![
             Box::new(simple_query),

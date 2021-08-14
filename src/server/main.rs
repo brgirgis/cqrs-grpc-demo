@@ -3,6 +3,7 @@ mod bank_account;
 #[path = "../proto/bank_account_api.rs"]
 mod bank_account_api;
 mod cqrs;
+mod tests;
 
 // arguments
 use arguments::Arguments;

@@ -1,6 +1,6 @@
 use cqrs_es2::{
-    Aggregate,
     AggregateError,
+    IAggregate,
 };
 use serde::{
     Deserialize,
@@ -24,13 +24,13 @@ pub struct BankAccount {
     balance: f64,
 }
 
-impl Aggregate for BankAccount {
+impl IAggregate for BankAccount {
     type Command = BankAccountCommand;
 
     type Event = BankAccountEvent;
 
     fn aggregate_type() -> &'static str {
-        "account"
+        "bank_account"
     }
 
     fn handle(
@@ -133,6 +133,15 @@ impl Default for BankAccount {
         BankAccount {
             account_id: "".to_string(),
             balance: 0_f64,
+        }
+    }
+}
+
+impl Clone for BankAccount {
+    fn clone(&self) -> Self {
+        BankAccount {
+            account_id: self.account_id.clone(),
+            balance: self.balance,
         }
     }
 }

@@ -1,6 +1,16 @@
 
 all:
+	make clean
+	make build
+
+clean:
+	rm -rf target
+
+build:
 	cargo build
+
+test:
+	cargo test
 
 up:
 	docker-compose up -d
@@ -8,8 +18,5 @@ up:
 down:
 	docker-compose down
 
-test:
-	cargo test
-
 run:
-	cargo run
+	cargo run --bin server

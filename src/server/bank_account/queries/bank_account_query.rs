@@ -1,11 +1,14 @@
-use cqrs_es2::{
-    EventEnvelope,
-    Query,
-};
 use serde::{
     Deserialize,
     Serialize,
 };
+
+use cqrs_es2::{
+    EventEnvelope,
+    IQuery,
+};
+
+use cqrs_es2_sql::GenericQueryRepository;
 
 use super::super::{
     aggregate::BankAccount,
@@ -19,7 +22,7 @@ pub struct BankAccountQuery {
     written_checks: Vec<String>,
 }
 
-impl Query<BankAccount> for BankAccountQuery {
+impl IQuery<BankAccount> for BankAccountQuery {
     fn update(
         &mut self,
         event: &EventEnvelope<BankAccount>,
@@ -52,3 +55,6 @@ impl Default for BankAccountQuery {
         }
     }
 }
+
+pub type BankAccountQueryRepository =
+    GenericQueryRepository<BankAccountQuery, BankAccount>;

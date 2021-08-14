@@ -28,13 +28,14 @@ tokio = { version = "1", features = [
 structopt = { version = "0.3", features = ["paw"] }
 #paw = "1.0"
 # CQRS framework and postgres implementation
-cqrs-es2 = "^0.2"
-postgres-es2 = "^0.2"
-# serialization
+cqrs-es2 = "^0.4"
 serde = { version = "1.0.104", features = ["derive"] }
 serde_json = "1.0"
 # postgres driver
-tokio-postgres = { version = "^0.7", features = ["with-serde_json-1"] }
+cqrs-es2-sql = "^0.1"
+#tokio-postgres = { version = "^0.7", features = ["with-serde_json-1"] }
+postgres = { version = "^0.19", features = ["with-serde_json-1"] }
+# rest API
 # other
 chrono = "0.4.11"
 

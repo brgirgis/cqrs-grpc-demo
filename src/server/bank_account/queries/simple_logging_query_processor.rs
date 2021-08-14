@@ -1,13 +1,13 @@
 use cqrs_es2::{
     EventEnvelope,
-    QueryProcessor,
+    IQueryProcessor,
 };
 
 use super::super::aggregate::BankAccount;
 
 pub struct SimpleLoggingQueryProcessor {}
 
-impl QueryProcessor<BankAccount> for SimpleLoggingQueryProcessor {
+impl IQueryProcessor<BankAccount> for SimpleLoggingQueryProcessor {
     fn dispatch(
         &mut self,
         aggregate_id: &str,

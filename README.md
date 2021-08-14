@@ -1,6 +1,6 @@
 # cqrs-grpc-demo
 
-**A demo application using the [cqrs-es2](https://github.com/brgirgis/cqrs-es2 framework and postgres persistence.**
+**A demo application using the [cqrs-es2](https://github.com/brgirgis/cqrs-es2) framework and postgres persistence.**
 
 ## Requirements
 
@@ -26,9 +26,9 @@ Start the application
 
     cargo run --bin server
 
-Call the API using the provided client.
+Call the API using the provided client for testing the running application.
 
 ### Documentation
 
-[Documentation can be found here](https://doc.rust-cqrs.org/)
+Documentation can be found [here](https://doc.rust-cqrs.org/)
 for the CQRS and event sourcing portions of this demo application.
