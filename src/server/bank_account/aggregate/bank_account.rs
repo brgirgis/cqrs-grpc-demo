@@ -1,10 +1,14 @@
-use cqrs_es2::{
-    AggregateError,
-    IAggregate,
-};
 use serde::{
     Deserialize,
     Serialize,
+};
+use std::fmt::Debug;
+
+use cqrs_es2::{
+    Error,
+    IAggregate,
+    ICommandHandler,
+    IEventHandler,
 };
 
 use super::super::{
@@ -18,27 +22,42 @@ use super::super::{
     },
 };
 
-#[derive(Serialize, Deserialize)]
+#[derive(
+    Debug,
+    PartialEq,
+    Default,
+    Clone,
+    Serialize,
+    Deserialize
+)]
 pub struct BankAccount {
     account_id: String,
     balance: f64,
 }
 
-impl IAggregate for BankAccount {
-    type Command = BankAccountCommand;
-
-    type Event = BankAccountEvent;
-
+impl IAggregate<BankAccountCommand, BankAccountEvent>
+    for BankAccount
+{
     fn aggregate_type() -> &'static str {
         "bank_account"
     }
+}
 
+impl ICommandHandler<BankAccountCommand, BankAccountEvent>
+    for BankAccount
+{
     fn handle(
         &self,
-        command: Self::Command,
-    ) -> Result<Vec<Self::Event>, AggregateError> {
+        command: BankAccountCommand,
+    ) -> Result<Vec<BankAccountEvent>, Error> {
         match command {
             BankAccountCommand::OpenBankAccount(payload) => {
+                if !self.account_id.is_empty() {
+                    return Err(Error::new(
+                        "bank account is already open",
+                    ));
+                }
+
                 let event_payload = BankAccountOpened {
                     account_id: payload.account_id,
                 };
@@ -67,9 +86,7 @@ impl IAggregate for BankAccount {
                 let balance = self.balance - payload.amount;
 
                 if balance < 0_f64 {
-                    return Err(AggregateError::new(
-                        "funds not available",
-                    ));
+                    return Err(Error::new("funds not available"));
                 }
 
                 let event_payload = CustomerWithdrewCash {
@@ -87,9 +104,7 @@ impl IAggregate for BankAccount {
                 let balance = self.balance - payload.amount;
 
                 if balance < 0_f64 {
-                    return Err(AggregateError::new(
-                        "funds not available",
-                    ));
+                    return Err(Error::new("funds not available"));
                 }
 
                 let event_payload = CustomerWroteCheck {
@@ -106,10 +121,12 @@ impl IAggregate for BankAccount {
             },
         }
     }
+}
 
+impl IEventHandler<BankAccountEvent> for BankAccount {
     fn apply(
         &mut self,
-        event: &Self::Event,
+        event: &BankAccountEvent,
     ) {
         match event {
             BankAccountEvent::BankAccountOpened(e) => {
@@ -124,24 +141,6 @@ impl IAggregate for BankAccount {
             BankAccountEvent::CustomerWroteCheck(e) => {
                 self.balance = e.balance;
             },
-        }
-    }
-}
-
-impl Default for BankAccount {
-    fn default() -> Self {
-        BankAccount {
-            account_id: "".to_string(),
-            balance: 0_f64,
-        }
-    }
-}
-
-impl Clone for BankAccount {
-    fn clone(&self) -> Self {
-        BankAccount {
-            account_id: self.account_id.clone(),
-            balance: self.balance,
         }
     }
 }

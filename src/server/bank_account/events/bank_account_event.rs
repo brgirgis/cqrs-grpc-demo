@@ -4,14 +4,14 @@ use serde::{
 };
 use std::fmt::Debug;
 
-use cqrs_es2::IDomainEvent;
+use cqrs_es2::IEvent;
 
 #[derive(
     Debug,
+    PartialEq,
     Clone,
     Serialize,
-    Deserialize,
-    PartialEq
+    Deserialize
 )]
 pub enum BankAccountEvent {
     BankAccountOpened(BankAccountOpened),
@@ -22,10 +22,10 @@ pub enum BankAccountEvent {
 
 #[derive(
     Debug,
+    PartialEq,
     Clone,
     Serialize,
-    Deserialize,
-    PartialEq
+    Deserialize
 )]
 pub struct BankAccountOpened {
     pub account_id: String,
@@ -33,10 +33,10 @@ pub struct BankAccountOpened {
 
 #[derive(
     Debug,
+    PartialEq,
     Clone,
     Serialize,
-    Deserialize,
-    PartialEq
+    Deserialize
 )]
 pub struct CustomerDepositedMoney {
     pub amount: f64,
@@ -45,10 +45,10 @@ pub struct CustomerDepositedMoney {
 
 #[derive(
     Debug,
+    PartialEq,
     Clone,
     Serialize,
-    Deserialize,
-    PartialEq
+    Deserialize
 )]
 pub struct CustomerWithdrewCash {
     pub amount: f64,
@@ -57,10 +57,10 @@ pub struct CustomerWithdrewCash {
 
 #[derive(
     Debug,
+    PartialEq,
     Clone,
     Serialize,
-    Deserialize,
-    PartialEq
+    Deserialize
 )]
 pub struct CustomerWroteCheck {
     pub check_number: String,
@@ -68,4 +68,4 @@ pub struct CustomerWroteCheck {
     pub balance: f64,
 }
 
-impl IDomainEvent for BankAccountEvent {}
+impl IEvent for BankAccountEvent {}

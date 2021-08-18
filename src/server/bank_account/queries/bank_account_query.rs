@@ -2,30 +2,47 @@ use serde::{
     Deserialize,
     Serialize,
 };
+use std::fmt::Debug;
 
 use cqrs_es2::{
-    EventEnvelope,
+    EventContext,
+    IEventConsumer,
     IQuery,
 };
 
-use cqrs_es2_sql::GenericQueryRepository;
-
 use super::super::{
-    aggregate::BankAccount,
+    commands::BankAccountCommand,
     events::BankAccountEvent,
 };
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(
+    Debug,
+    PartialEq,
+    Default,
+    Clone,
+    Serialize,
+    Deserialize
+)]
 pub struct BankAccountQuery {
-    account_id: Option<String>,
-    balance: f64,
-    written_checks: Vec<String>,
+    pub account_id: Option<String>,
+    pub balance: f64,
+    pub written_checks: Vec<String>,
 }
 
-impl IQuery<BankAccount> for BankAccountQuery {
+impl IQuery<BankAccountCommand, BankAccountEvent>
+    for BankAccountQuery
+{
+    fn query_type() -> &'static str {
+        "bank_account_query"
+    }
+}
+
+impl IEventConsumer<BankAccountCommand, BankAccountEvent>
+    for BankAccountQuery
+{
     fn update(
         &mut self,
-        event: &EventEnvelope<BankAccount>,
+        event: &EventContext<BankAccountCommand, BankAccountEvent>,
     ) {
         match &event.payload {
             BankAccountEvent::BankAccountOpened(payload) => {
@@ -45,16 +62,3 @@ impl IQuery<BankAccount> for BankAccountQuery {
         }
     }
 }
-
-impl Default for BankAccountQuery {
-    fn default() -> Self {
-        BankAccountQuery {
-            account_id: None,
-            balance: 0_f64,
-            written_checks: Default::default(),
-        }
-    }
-}
-
-pub type BankAccountQueryRepository =
-    GenericQueryRepository<BankAccountQuery, BankAccount>;

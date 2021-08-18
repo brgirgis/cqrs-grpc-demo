@@ -1,4 +1,4 @@
-use cqrs_es2::test::TestFramework;
+use cqrs_es2::TestFramework;
 
 use super::super::{
     commands::{
@@ -17,7 +17,8 @@ use super::super::{
 
 use super::bank_account::BankAccount;
 
-type BankAccountTestFramework = TestFramework<BankAccount>;
+type BankAccountTestFramework =
+    TestFramework<BankAccountCommand, BankAccountEvent, BankAccount>;
 
 #[test]
 fn test_deposit_money() {
