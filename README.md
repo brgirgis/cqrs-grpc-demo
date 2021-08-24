@@ -1,5 +1,7 @@
 # cqrs-grpc-demo
 
+!! DEPRECATED !! Please follow the recent work [here](https://github.com/brgirgis/cqrs-es2)
+
 **A demo application using the [cqrs-es2](https://github.com/brgirgis/cqrs-es2) framework.**
 
 ## Requirements
